@@ -1,0 +1,8 @@
+Obtenido en: https://www.cs.jhu.edu/~mdredze/datasets/sentiment/
+
+Utilizado en: John Blitzer, Mark Dredze, Fernando Pereira. Biographies, Bollywood, Boom-boxes and Blenders: Domain Adaptation for Sentiment Classification. Association of Computational Linguistics (ACL), 2007. 
+
+- processed.acl.tar.gz contains the data pre-processed and balanced. That is, the format of Blitzer et al. (ACL 2007).
+
+The preprocessed data is one line per document, with each line in the format: 
+feature:<count> .... feature:<count> #label#:<label> 
