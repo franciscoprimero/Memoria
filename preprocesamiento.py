@@ -2,7 +2,7 @@
 import os
 import argparse
 
-from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import CountVectorizer, HashingVectorizer
 from nltk.corpus import stopwords
 import pandas as pd
 
@@ -34,7 +34,7 @@ def read_amazon_file(path, labeled=True):
         return comentarios
 
 
-def read_all_amazon_domains():
+def read_all_amazon_domains(path):
     """read_all_amazon_domains."""
     file_names = ['positive.review', 'negative.review', 'unlabeled.review']
 
@@ -44,16 +44,13 @@ def read_all_amazon_domains():
     unlabeled = {}
 
     print 'Leyendo dominio: '
-    path = os.path.join(raw_path, amazon_path)
     for folder in os.listdir(path):
         print "- %s" % folder
 
         instances = []
         labels = []
         for file_name in file_names[0:2]:
-            #TODO usar os.path.join
             file_path = os.path.join(path, folder, file_name)
-            #file_path = raw_path+amazon_path+folder+"/"+file_name
             new_instances, new_labels = read_amazon_file(file_path)
             instances += new_instances
             labels += new_labels
@@ -65,7 +62,6 @@ def read_all_amazon_domains():
 
         # datos sin etiquetas
         file_path = os.path.join(path, folder, file_names[2])
-        #file_path = raw_path+amazon_path+folder+"/"+file_names[2]
         instances = read_amazon_file(file_path, labeled=False)
 
         unlabeled[folder] = {
@@ -168,11 +164,11 @@ def preprocesar(labeled, unlabeled, dims, stop_words=None):
 
 def main(dataset, dims):
     """main."""
+    new_path = os.path.join(raw_path, raw_folders[dataset])
     if dataset == 'amazon':
         try:
-            print 'Leyendo directorio %s' % os.path.join(raw_path, raw_folders[dataset])
-            return
-            labeled, unlabeled, domains = read_all_amazon_domains()
+            print 'Leyendo directorio %s' % new_path
+            labeled, unlabeled, domains = read_all_amazon_domains(new_path)
 
             print 'Procesando datos.'
             labeled, unlabeled = preprocesar(labeled, unlabeled, dims)
@@ -190,8 +186,8 @@ def main(dataset, dims):
 
     elif dataset == 'twitter':
         try:
-            print 'Leyendo directorio %s' % os.path.join(raw_path, raw_folders[dataset])
-            labeled, domains = read_twitter_files(os.path.join(raw_path, raw_folders[dataset]))
+            print 'Leyendo directorio %s' % new_path
+            labeled, domains = read_twitter_files(new_path)
 
             print 'Procesando datos.'
             stop_words = stopwords.words('spanish')
@@ -208,22 +204,22 @@ def main(dataset, dims):
         except Exception:
             print 'Error leyendo los datos de twitter.'
 
-    elif dataset == 'twitter_3':
-        try:
-            print 'Leyendo directorio %s' % raw_path + twitter_3_path
-            instances, labels, domains = read_twitter_files(True)
+    #elif dataset == 'twitter_3':
+    #    try:
+    #        print 'Leyendo directorio %s' % raw_path + twitter_3_path
+    #        instances, labels, domains = read_twitter_files(True)
 
-            print 'Procesando datos.'
-            stop_words = stopwords.words('spanish')
-            x_cv, x, y_cv, y = preprocesar(instances, labels, domains, dims, stop_words)
+    #         print 'Procesando datos.'
+    #        stop_words = stopwords.words('spanish')
+    #        x_cv, x, y_cv, y = preprocesar(instances, labels, domains, dims, stop_words)
 
-            dataset_path = data_path + 'twitter_3.pkl'
-            print 'Guardando datos en %s' % dataset_path
-            dataset_object = Dataset(x, y, domains)
-            dataset_object.save(dataset_path)
-
-        except Exception:
-            print 'Error leyendo los datos de twitter.'
+#            dataset_path = data_path + 'twitter_3.pkl'
+#            print 'Guardando datos en %s' % dataset_path
+#            dataset_object = Dataset(x, y, domains)
+#            dataset_object.save(dataset_path)
+#
+#        except Exception:
+#            print 'Error leyendo los datos de twitter.'
     else:
         print 'Dataset no encontrado'
 
