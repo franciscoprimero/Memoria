@@ -19,6 +19,7 @@ Al tener Anaconda instalado, se require ejecutar los siguientes comandos:
 
 ```
 $ conda env create -f env_memoria.yml
+$ python -m nltk.downloader stopwords
 ```
 
 #### Para iniciar el entorno virtual y ejecutar las pruebas:
