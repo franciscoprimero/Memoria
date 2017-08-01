@@ -157,7 +157,7 @@ def preprocesar(labeled, unlabeled, dims, stop_words=None):
 
     if unlabeled is not None:
         for d_ul in unlabeled:
-            unlabeled[d_ul]['X'] = x_cv.transform(labeled[d_ul]['X'])
+            unlabeled[d_ul]['X'] = x_cv.transform(unlabeled[d_ul]['X'])
 
     return labeled, unlabeled
 

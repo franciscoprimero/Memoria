@@ -222,7 +222,7 @@ def adapt_msda(x_src, pr=0.5, n_layers=1):
 
 # se entrenan varios mSDA con distintos parametros utilizando
 # todos los datos disponibles
-def msda_pseudo_grid_search(X, parameters):
+def msda_pseudo_grid_search(X, parameters, models_path, tipo, dataset_name):
     i = 0
     saved_paths = []
     
@@ -231,7 +231,7 @@ def msda_pseudo_grid_search(X, parameters):
             print "pr: %.3f - l: %d" % (noise, layer)
             
             #entrenar el mSDA
-            t_adaptar, train_mappings = adapt_msda(X[:, :dims], pr=noise, n_layers=layer)
+            t_adaptar, train_mappings = adapt_msda(X, pr=noise, n_layers=layer)
             
             # se crea un diccionario para almacenar el modelo y sus datos
             new_model = {

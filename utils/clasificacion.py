@@ -11,14 +11,14 @@ def get_best_score(X_tr, y_tr, clasifier='SVC'):
         parametros = [{'kernel': ['linear'], 'C': [1, 10, 100, 1000]}]
         score = 'precision'
     
-        clf = GridSearchCV(SVC(C=1), parametros, cv=5, scoring='%s_macro' % score)
+        clf = GridSearchCV(SVC(C=1), parametros, cv=5, scoring='%s_macro' % score, n_jobs = 2)
         clf.fit(X_tr, y_tr)
 
     elif clasifier is 'KNeighbors':
         parametros = [{'n_neighbors': [10, 50, 100]}]
         score = 'precision'
         
-        clf = GridSearchCV(KNeighborsClassifier(), parametros, cv=5, scoring='%s_macro' % score)
+        clf = GridSearchCV(KNeighborsClassifier(), parametros, cv=5, scoring='%s_macro' % score, n_jobs = 2)
         clf.fit(X_tr, y_tr)
         
     return clf
