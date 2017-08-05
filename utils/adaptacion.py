@@ -69,7 +69,7 @@ def gfk_compute_svc(K, Xs, Ys, Xt, Yt):
     return svc.score(Xt, Yt)
 
 
-def gfk_grid_search(parameters, X_src, y_src, X_tgt):
+def gfk_grid_search(parameters, X_src, y_src, X_tgt, n_jobs=2):
     """
     gfk_grid_search
     
@@ -87,13 +87,13 @@ def gfk_grid_search(parameters, X_src, y_src, X_tgt):
     
     for dim in parameters['dims']:
         for n in parameters['n_subs']:
-            #print "n: %d - d: %d" % (n, dim),
+            print "\tn: %d - d: %d" % (n, dim),
             gfk = adapt_gfk(X_src, X_tgt, n, dim)
             X_src2 = transform_gfk(X_src, gfk)
             
-            clf = get_best_score(X_src2, y_src, 'KNeighbors')
+            clf = get_best_score(X_src2, y_src, 'KNeighbors', n_jobs=n_jobs)
             
-            #print clf.best_score_
+            print clf.best_score_
             
             if best_score is None:
                 best_score = clf.best_score_
@@ -142,10 +142,10 @@ def create_SDA(input_size, layers, noise):
     return autoencoder, encoder
 
 
-def sda_pseudo_grid_search(X, parameters, models_path, tipo, dataset_name):
+def sda_pseudo_grid_search(X_train, X_val, parameters, models_path, tipo, dataset_name):
     i=0
     saved_paths = []
-    dims = X.shape[1]
+    dims = X_train.shape[1]
     
     for noise in parameters['noise']:
         for layers in parameters['layers']:
@@ -155,32 +155,22 @@ def sda_pseudo_grid_search(X, parameters, models_path, tipo, dataset_name):
                 #se crea un sda
                 autoencoder, encoder = create_SDA(dims, layers, noise)
                 
-                #TODO: tomar el tiempo
                 #TODO: datos de validacion
                 print "\tEntrenando autoencoder..."
-                autoencoder.fit(X, X,
+                autoencoder.fit(X_train, X_train,
                    epochs=epoch,
                    batch_size=256,
                    shuffle=True,
                    verbose=0,
-                   validation_data=(X, X))
+                   validation_data=(X_val, X_val))
                 
-                ########################
-                # esto se puede borrar #
-                ########################
-                new_model = {
-                    'noise': noise,
-                    'layers': layers,
-                    'autoencoder': autoencoder,
-                    'encoder': encoder,
-                }
                 
                 #guardar el modelo
                 ae_save_path = os.path.join(models_path, tipo, "%s_ae_%d.h5" % (dataset_name, i))
                 e_save_path = os.path.join(models_path, tipo, "%s_e_%d.h5" % (dataset_name, i))
                 
                 print "\tGuardando autoencoder en %s" % ae_save_path
-                #autoencoder.save(ae_save_path)
+                autoencoder.save(ae_save_path)
                 print "\tGuardando encoder en %s" % e_save_path
                 encoder.save(e_save_path)
                 
