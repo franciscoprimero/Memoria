@@ -14,9 +14,10 @@ from bob.learn.linear import GFKTrainer
 
 
 from mSDA import msda, md
+from mSDA.msda_theano import mSDATheano
 
 from sklearn.externals import joblib
-
+import theano.tensor as T
 
 ###########
 ### GFK ###
@@ -212,6 +213,38 @@ def adapt_msda(x_src, pr=0.5, n_layers=1):
 
 # se entrenan varios mSDA con distintos parametros utilizando
 # todos los datos disponibles
+def msda_theano_pseudo_grid_search(X, parameters, models_path, tipo, dataset_name):
+    i = 0
+    saved_paths = []
+    x = T.dmatrix('x')
+    
+    for noise in parameters['noises']:
+        for layer in parameters['layers']:
+            print "\tpr: %.3f - l: %d" % (noise, layer)
+            
+            #entrenar el mSDA
+            new_msda = mSDATheano(x, layer, noise)
+            t_adaptar = new_msda.fit(X)
+            
+            # se crea un diccionario para almacenar el modelo y sus datos
+            new_model = {
+                'pr': noise,
+                'l': layer,
+                'model': new_msda,
+                'time': t_adaptar,
+            }
+            
+            #guardar el modelo
+            msda_save_path = os.path.join(models_path, tipo, "%s_%d.pkl" % (dataset_name, i))
+            
+            
+            print "\tGuardando modelo en %s" % msda_save_path
+            joblib.dump(new_model, msda_save_path)
+            saved_paths.append(msda_save_path)
+            i = i+1
+    
+    return saved_paths
+
 def msda_pseudo_grid_search(X, parameters, models_path, tipo, dataset_name):
     i = 0
     saved_paths = []

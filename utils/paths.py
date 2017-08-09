@@ -23,7 +23,7 @@ raw_folders = {
 }
 
 dimensions = {
- 'amazon': 2000,
+ 'amazon': 3000,
  'twitter': 2000
 }
 

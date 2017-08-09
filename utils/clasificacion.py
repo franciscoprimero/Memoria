@@ -8,7 +8,12 @@ from sklearn.externals import joblib
 def get_best_score(X_tr, y_tr, clasifier='SVC', n_jobs=2):
     
     if clasifier is 'SVC':
-        parametros = [{'kernel': ['linear'], 'C': [1, 10, 100, 1000]}]
+        parametros = [{
+            'kernel': ['linear'], 
+            'C': [1, 10, 100, 1000],
+            'cache_size': [7000],
+            'max_iter': [20000],
+        }]
     
         clf = GridSearchCV(SVC(C=1), parametros, cv=5, n_jobs = n_jobs)
         clf.fit(X_tr, y_tr)
