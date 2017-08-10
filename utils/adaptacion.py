@@ -12,6 +12,7 @@ from keras import optimizers
 
 from bob.learn.linear import GFKTrainer
 
+from sklearn.decomposition import PCA
 
 from mSDA import msda, md
 from mSDA.msda_theano import mSDATheano
@@ -156,7 +157,6 @@ def sda_pseudo_grid_search(X_train, X_val, parameters, models_path, tipo, datase
                 #se crea un sda
                 autoencoder, encoder = create_SDA(dims, layers, noise)
                 
-                #TODO: datos de validacion
                 print "\tEntrenando autoencoder..."
                 autoencoder.fit(X_train, X_train,
                    epochs=epoch,
@@ -279,5 +279,25 @@ def msda_pseudo_grid_search(X, parameters, models_path, tipo, dataset_name):
 ## PCA ###
 ##########
 
-def adapt_pca(X, dims):
-    return X
+def pca_pseudo_grid_search(X_train, parameters, models_path, tipo, dataset_name):
+    i = 0
+    saved_paths = []
+    
+    for n_components in parameters['n_components']:
+        print "\tn_components: %d" % (n_components)
+        
+        #se crea un modelo PCA
+        new_model = PCA(n_components=n_components)
+        
+        print "\tEntrenando modelo PCA..."
+        new_model.fit(X_train)
+        
+        model_save_path = os.path.join(models_path, tipo, "%s_%d.pkl" % (dataset_name, i))
+        print "\tGuardando modelo en %s\n" % model_save_path
+        
+        joblib.dump(new_model, model_save_path)
+        
+        saved_paths.append(model_save_path)
+        i =i+1
+        
+    return saved_paths
