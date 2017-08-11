@@ -1,13 +1,13 @@
 ,Adaptacion,Tarea,Fuente,Objetivo,Baseline error,Transfer error,Transfer loss
-0,mSDA,e->d,electronics,dvd,23.0,46.0,23.0
-1,mSDA,e->k,electronics,kitchen,17.5,26.75,9.25
-2,mSDA,e->b,electronics,books,21.25,47.25,26.0
-3,mSDA,d->e,dvd,electronics,20.0,37.75,17.75
-4,mSDA,d->k,dvd,kitchen,17.5,31.0,13.5
-5,mSDA,d->b,dvd,books,21.25,40.25,19.0
-6,mSDA,k->e,kitchen,electronics,20.0,27.5,7.5
-7,mSDA,k->d,kitchen,dvd,23.0,44.5,21.5
-8,mSDA,k->b,kitchen,books,21.25,46.5,25.25
-9,mSDA,b->e,books,electronics,20.0,39.25,19.25
-10,mSDA,b->d,books,dvd,23.0,36.75,13.75
-11,mSDA,b->k,books,kitchen,17.5,33.0,15.5
+0,mSDA,e->d,electronics,dvd,23.0,31.75,8.75
+1,mSDA,e->k,electronics,kitchen,17.5,20.0,2.5
+2,mSDA,e->b,electronics,books,21.25,33.5,12.25
+3,mSDA,d->e,dvd,electronics,20.0,32.0,12.0
+4,mSDA,d->k,dvd,kitchen,17.5,26.0,8.5
+5,mSDA,d->b,dvd,books,21.25,30.75,9.5
+6,mSDA,k->e,kitchen,electronics,20.0,18.75,-1.25
+7,mSDA,k->d,kitchen,dvd,23.0,32.25,9.25
+8,mSDA,k->b,kitchen,books,21.25,34.25,13.0
+9,mSDA,b->e,books,electronics,20.0,27.25,7.25
+10,mSDA,b->d,books,dvd,23.0,26.25,3.25
+11,mSDA,b->k,books,kitchen,17.5,28.25,10.75
