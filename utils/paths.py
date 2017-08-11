@@ -2,6 +2,7 @@ raw_path = 'raw_data'
 data_path = 'data'
 scores_path = 'scores'
 models_path = 'models'
+graficos_path = 'graficos'
 
 datasets = ['amazon', 'twitter']
 
@@ -26,8 +27,3 @@ dimensions = {
  'amazon': 3000,
  'twitter': 2000
 }
-
-
-#amazon_path = 'multi-domain/processed_acl'
-#twitter_3_path = 'twitter_3_etiquetas/'
-#twitter_path = 'twitter'
