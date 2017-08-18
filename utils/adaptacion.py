@@ -1,5 +1,5 @@
 import time
-
+import timeit
 import numpy as np
 import os
 from sklearn.neighbors import KNeighborsClassifier

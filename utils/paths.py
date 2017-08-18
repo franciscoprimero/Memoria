@@ -1,6 +1,7 @@
 raw_path = 'raw_data'
 data_path = 'data'
 scores_path = 'scores'
+times_path = 'tiempos'
 models_path = 'models'
 graficos_path = 'graficos'
 
@@ -16,6 +17,8 @@ dataframe_columns = ['Adaptacion',
                      'Transfer error', 
                      'Transfer loss']
 
+
+dataframe_time_columns = ['Adaptacion', 'Tiempo']
 
 raw_folders = {
     'amazon': 'multi-domain/processed_acl',
