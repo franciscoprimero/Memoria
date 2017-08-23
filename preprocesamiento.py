@@ -3,6 +3,7 @@ import os
 import argparse
 
 from sklearn.feature_extraction.text import CountVectorizer, HashingVectorizer
+from sklearn.datasets import fetch_20newsgroups
 from nltk.corpus import stopwords
 import pandas as pd
 
@@ -35,7 +36,9 @@ def read_amazon_file(path, labeled=True):
 
 
 def read_all_amazon_domains(path):
-    """read_all_amazon_domains."""
+    """read_all_amazon_domains.
+    Lee los dominios desde los archivos ubicados en la ruta 'path'
+    """
     file_names = ['positive.review', 'negative.review', 'unlabeled.review']
 
     domains = []
@@ -125,14 +128,34 @@ def read_twitter_files(dir_path, three_labels=False):
     return labeled, domains
 
 
+def read_newsgroups(path):
+    cats = ['rec.sport.hockey', 'rec.autos', 'rec.motorcycles', 'rec.sport.baseball']
+
+    labeled = {}
+    domains = []
+
+    for cat in cats:
+        labels = []
+
+        newsgroups_data = fetch_20newsgroups(data_home=path, subset='all', categories=[cat])
+
+        labeled[cat] = {
+            'X': newsgroups_data.data,
+            'y': newsgroups_data.target
+        }
+
+        domains.append(cat)
+
+    return labeled, domains
+
+path = './raw_data/newsgroups'
+labeled, domains = read_newsgroups(path)
+
 def preprocesar(labeled, unlabeled, dims, stop_words=None):
     """preprocesar."""
 
     instances = []
     labels = []
-    ant = 0
-    labeled_lims ={}
-    unlabeled_lims = {}
 
     for v_l in labeled.values():
         instances += v_l['X']
@@ -161,6 +184,24 @@ def preprocesar(labeled, unlabeled, dims, stop_words=None):
 
     return labeled, unlabeled
 
+
+def preprocesar_newsgroups(labeled, dims, stop_words=None):
+    """preprocesar_newsgroups.
+    """
+    instances = []
+    ant = 0
+
+    for v_l in labeled.values():
+        instances += v_l['X']
+
+
+    x_cv = CountVectorizer(max_features=dims, ngram_range=(1, 2), binary=True, stop_words=stop_words)
+    x_cv.fit(instances)
+
+    for d_l in labeled:
+        labeled[d_l]['X'] = x_cv.transform(labeled[d_l]['X'])
+
+    return labeled
 
 def main(dataset, dims):
     """main."""
@@ -193,7 +234,6 @@ def main(dataset, dims):
             stop_words = stopwords.words('spanish')
             labeled, unlabeled = preprocesar(labeled, None, dims)
 
-
             dataset_path = os.path.join(data_path, dataset+'.pkl')
             print 'Guardando datos en %s' % dataset_path
             dataset_object = Dataset(labeled, None, domains)
@@ -203,7 +243,22 @@ def main(dataset, dims):
 
         except Exception:
             print 'Error leyendo los datos de twitter.'
+    elif dataset == 'newsgroups':
+        try:
+            print 'Leyendo directorio %s' % new_path
+            labeled, domains = read_newsgroups(new_path)
 
+            print 'Procesando datos.'
+            labeled = preprocesar_newsgroups(labeled, dims)
+
+            dataset_path = os.path.join(data_path, dataset+'.pkl')
+            print 'Guardando datos en %s' % dataset_path
+            dataset_object = Dataset(labeled, None, domains)
+            dataset_object.save(dataset_path)
+
+            print 'Operacion terminada.'
+        except Exception:
+            print 'Error leyendo los datos de newsgroups.'
     #elif dataset == 'twitter_3':
     #    try:
     #        print 'Leyendo directorio %s' % raw_path + twitter_3_path
@@ -230,7 +285,7 @@ if __name__ == '__main__':
     parser.add_argument("--dataset",
                         type=str,
                         default="amazon",
-                        help="Data a preprocesar: amazon|twitter|twitter_3\n")
+                        help="Data a preprocesar: amazon|twitter|newsgroups\n")
     parser.add_argument("--dims",
                         type=int,
                         default=2000,
