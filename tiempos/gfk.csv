@@ -1,4 +1,4 @@
-,Adaptacion,Unnamed: 0,Tiempo
-0,GFK (n_dims=10),6,2.58207321167e-06
-1,GFK (n_dims=100),8,1.69936815898e-05
-2,GFK (n_dims=50),7,2.18550364176e-06
+,Adaptacion,Tiempo
+0,GFK (n_dims=10),0.106288743019
+1,GFK (n_dims=100),0.118440917333
+2,GFK (n_dims=50),0.109967473348
