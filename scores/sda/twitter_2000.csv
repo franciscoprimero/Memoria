@@ -1,3 +1,0 @@
-,Adaptacion,Tarea,Fuente,Objetivo,Baseline error,Transfer error,Transfer loss
-0,SDA,r->t,rio2016,thevoice,16.1538461538,35.3846153846,19.2307692308
-1,SDA,t->r,thevoice,rio2016,19.7916666667,40.625,20.8333333333

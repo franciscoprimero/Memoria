@@ -5,25 +5,25 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import GridSearchCV, cross_val_score
 from sklearn.externals import joblib
 
-def get_best_score(X_tr, y_tr, clasifier='SVC', n_jobs=2):
-    
-    if clasifier is 'SVC':
+def get_best_score(X_tr, y_tr, classifier='SVC', n_jobs=2):
+
+    if classifier is 'SVC':
         parametros = [{
-            'kernel': ['linear'], 
+            'kernel': ['linear'],
             'C': [1, 10, 100, 1000],
             'cache_size': [7000],
             'max_iter': [20000],
         }]
-    
+
         clf = GridSearchCV(SVC(C=1), parametros, cv=5, n_jobs = n_jobs)
         clf.fit(X_tr, y_tr)
 
-    elif clasifier is 'KNeighbors':
+    elif classifier is 'KNeighbors':
         parametros = [{'n_neighbors': [10, 50, 100]}]
         
         clf = GridSearchCV(KNeighborsClassifier(), parametros, cv=5, n_jobs = n_jobs)
         clf.fit(X_tr, y_tr)
-        
+
     return clf
 
 
@@ -33,7 +33,7 @@ def load_best_score(path, X_tr, y_tr):
         modelo = joblib.load(path)
     else:
         print "Creando mejor modelo."
-        modelo = get_best_score(X_tr, y_tr, clasifier='SVC', n_jobs=4)
+        modelo = get_best_score(X_tr, y_tr, classifier='SVC', n_jobs=4)
         joblib.dump(modelo, path)
         print "Guardando mejor modelo."
 

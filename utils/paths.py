@@ -5,7 +5,7 @@ times_path = 'tiempos'
 models_path = 'models'
 graficos_path = 'graficos'
 
-datasets = ['amazon', 'twitter', 'newsgroups']
+datasets = ['amazon', 'twitter']
 
 pruebas = ['baseline', 'msda', 'gfk', 'pca', 'sda']
 
@@ -28,7 +28,6 @@ raw_folders = {
 }
 
 dimensions = {
- 'amazon': 3000,
- 'twitter': 2000,
- 'newsgroups': 1000,
+ 'amazon': 1000,
+ 'twitter': 500,
 }

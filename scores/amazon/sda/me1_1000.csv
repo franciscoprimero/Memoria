@@ -1,0 +1,13 @@
+,Adaptacion,Tarea,Fuente,Objetivo,Baseline error,Transfer error,Transfer loss
+1,SDA,k->d,kitchen,dvd,26.25,41.5,15.25
+2,SDA,k->e,kitchen,electronics,23.5,25.5,2.0
+3,SDA,k->b,kitchen,books,25.5,39.75,14.25
+4,SDA,d->k,dvd,kitchen,20.75,28.25,7.5
+5,SDA,d->e,dvd,electronics,23.5,36.5,13.0
+6,SDA,d->b,dvd,books,25.5,33.0,7.5
+7,SDA,e->k,electronics,kitchen,20.75,21.5,0.75
+8,SDA,e->d,electronics,dvd,26.25,31.25,5.0
+9,SDA,e->b,electronics,books,25.5,39.75,14.25
+10,SDA,b->k,books,kitchen,20.75,30.5,9.75
+11,SDA,b->d,books,dvd,26.25,32.0,5.75
+12,SDA,b->e,books,electronics,23.5,35.0,11.5

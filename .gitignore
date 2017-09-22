@@ -2,3 +2,6 @@
 *.ipynb_checkpoints
 *.pkl
 *.h5
+temp.ipynb
+raw_data/twitter/.~lock.general.xls#
+raw_data/twitter2/*

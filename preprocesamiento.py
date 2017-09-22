@@ -2,8 +2,7 @@
 import os
 import argparse
 
-from sklearn.feature_extraction.text import CountVectorizer, HashingVectorizer
-from sklearn.datasets import fetch_20newsgroups
+from sklearn.feature_extraction.text import CountVectorizer
 from nltk.corpus import stopwords
 import pandas as pd
 
@@ -76,7 +75,7 @@ def read_all_amazon_domains(path):
     return labeled, unlabeled, domains
 
 
-def read_twitter_files(dir_path, three_labels=False):
+def read_twitter_files(dir_path):
     """read_twitter_files."""
 
 
@@ -84,23 +83,18 @@ def read_twitter_files(dir_path, three_labels=False):
     labeled = {}
 
     print "Leyendo dominio: "
-    # TODO: arreglar esto
-    if three_labels:
-        dir_path = raw_path+twitter_3_path
-
-
-    for xls_file in os.listdir(dir_path):
+    for csv_file in os.listdir(dir_path):
 
         instances = []
         labels = []
 
-        full_path = os.path.join(dir_path, xls_file)
+        full_path = os.path.join(dir_path, csv_file)
 
-        if ".xls" in full_path:
-            domain = xls_file.split(".")[0]
+        if ".csv" in full_path:
+            domain = csv_file.split(".")[0]
             print "- %s" % domain
 
-            data = pd.read_excel(full_path, header=1)[['Cuerpo', 'Sentido']]
+            data = pd.read_csv(full_path, sep=';')[['Cuerpo', 'Sentido']]
 
             # eliminar retweets
             data.drop_duplicates("Cuerpo", keep='first')
@@ -110,9 +104,13 @@ def read_twitter_files(dir_path, three_labels=False):
             temp_instances = data.Cuerpo.values.tolist()
 
             for instance, label in zip(temp_instances, temp_labels):
+                if str(label) == 'nan':
+                    continue
+                    
                 words = instance.split(" ")
                 words = [x.lower() for x in words if ("@" not in x and "#" not in x and "http" not in x and "RT" not in x)]
                 instance = " ".join(words)
+                instance = unicode(instance, errors='replace')
 
                 if instance not in instances:
                     instances.append(instance)
@@ -128,35 +126,11 @@ def read_twitter_files(dir_path, three_labels=False):
     return labeled, domains
 
 
-def read_newsgroups(path):
-    cats = ['rec.sport.hockey', 'rec.autos', 'rec.motorcycles', 'rec.sport.baseball']
-
-    labeled = {}
-    domains = []
-
-    for cat in cats:
-        labels = []
-
-        newsgroups_data = fetch_20newsgroups(data_home=path, subset='all', categories=[cat])
-
-        labeled[cat] = {
-            'X': newsgroups_data.data,
-            'y': newsgroups_data.target
-        }
-
-        domains.append(cat)
-
-    return labeled, domains
-
-path = './raw_data/newsgroups'
-labeled, domains = read_newsgroups(path)
-
 def preprocesar(labeled, unlabeled, dims, stop_words=None):
     """preprocesar."""
 
     instances = []
     labels = []
-
     for v_l in labeled.values():
         instances += v_l['X']
         labels += v_l['y']
@@ -165,14 +139,11 @@ def preprocesar(labeled, unlabeled, dims, stop_words=None):
         for v_ul in unlabeled.values():
             instances += v_ul['X']
 
-
-
     x_cv = CountVectorizer(max_features=dims, ngram_range=(1, 2), binary=True, stop_words=stop_words)
     x_cv.fit(instances)
 
     y_cv = CountVectorizer()
     y_cv.fit(labels)
-
 
     for d_l in labeled:
         labeled[d_l]['X'] = x_cv.transform(labeled[d_l]['X'])
@@ -184,24 +155,6 @@ def preprocesar(labeled, unlabeled, dims, stop_words=None):
 
     return labeled, unlabeled
 
-
-def preprocesar_newsgroups(labeled, dims, stop_words=None):
-    """preprocesar_newsgroups.
-    """
-    instances = []
-    ant = 0
-
-    for v_l in labeled.values():
-        instances += v_l['X']
-
-
-    x_cv = CountVectorizer(max_features=dims, ngram_range=(1, 2), binary=True, stop_words=stop_words)
-    x_cv.fit(instances)
-
-    for d_l in labeled:
-        labeled[d_l]['X'] = x_cv.transform(labeled[d_l]['X'])
-
-    return labeled
 
 def main(dataset, dims):
     """main."""
@@ -243,38 +196,6 @@ def main(dataset, dims):
 
         except Exception:
             print 'Error leyendo los datos de twitter.'
-    elif dataset == 'newsgroups':
-        try:
-            print 'Leyendo directorio %s' % new_path
-            labeled, domains = read_newsgroups(new_path)
-
-            print 'Procesando datos.'
-            labeled = preprocesar_newsgroups(labeled, dims)
-
-            dataset_path = os.path.join(data_path, dataset+'.pkl')
-            print 'Guardando datos en %s' % dataset_path
-            dataset_object = Dataset(labeled, None, domains)
-            dataset_object.save(dataset_path)
-
-            print 'Operacion terminada.'
-        except Exception:
-            print 'Error leyendo los datos de newsgroups.'
-    #elif dataset == 'twitter_3':
-    #    try:
-    #        print 'Leyendo directorio %s' % raw_path + twitter_3_path
-    #        instances, labels, domains = read_twitter_files(True)
-
-    #         print 'Procesando datos.'
-    #        stop_words = stopwords.words('spanish')
-    #        x_cv, x, y_cv, y = preprocesar(instances, labels, domains, dims, stop_words)
-
-#            dataset_path = data_path + 'twitter_3.pkl'
-#            print 'Guardando datos en %s' % dataset_path
-#            dataset_object = Dataset(x, y, domains)
-#            dataset_object.save(dataset_path)
-#
-#        except Exception:
-#            print 'Error leyendo los datos de twitter.'
     else:
         print 'Dataset no encontrado'
 
@@ -285,7 +206,7 @@ if __name__ == '__main__':
     parser.add_argument("--dataset",
                         type=str,
                         default="amazon",
-                        help="Data a preprocesar: amazon|twitter|newsgroups\n")
+                        help="Data a preprocesar: amazon|twitter\n")
     parser.add_argument("--dims",
                         type=int,
                         default=2000,
