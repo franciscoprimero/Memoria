@@ -3,8 +3,13 @@ import os
 import argparse
 
 from sklearn.feature_extraction.text import CountVectorizer
-from nltk.corpus import stopwords
 import pandas as pd
+
+import nltk
+from nltk.corpus import stopwords
+from nltk import word_tokenize
+from string import punctuation
+import re
 
 from utils.DatasetStorage import Dataset
 from utils.paths import *
@@ -74,6 +79,26 @@ def read_all_amazon_domains(path):
 
     return labeled, unlabeled, domains
 
+def clean_tweet(text):
+    words = text.split(" ")
+    words = [x for x in words if ("@" not in x and "#" not in x and "http" not in x and "RT" not in x)]
+
+    text = ' '.join(words)
+
+    non_words = punctuation+'\xa1\xc2\xbf'
+    puntuacion = r"[{}]".format(non_words)
+    text = re.sub(puntuacion, ' ', text)
+
+    text = text.decode('utf-8', errors='ignore')
+
+    #text = unicode(text.decode('utf-8', errors='ignore'))
+
+    #patt = re.compile(u'([\U00002600-\U000027BF])|([\U0001f300-\U0001f64F])|([\U0001f680-\U0001f6FF])')
+    #text = patt.sub('', text)
+    #text = text.encode('utf-8')
+
+    return text
+
 
 def read_twitter_files(dir_path):
     """read_twitter_files."""
@@ -106,11 +131,13 @@ def read_twitter_files(dir_path):
             for instance, label in zip(temp_instances, temp_labels):
                 if str(label) == 'nan':
                     continue
-                    
-                words = instance.split(" ")
-                words = [x.lower() for x in words if ("@" not in x and "#" not in x and "http" not in x and "RT" not in x)]
-                instance = " ".join(words)
-                instance = unicode(instance, errors='replace')
+
+                #words = instance.split(" ")
+                #words = [x.lower() for x in words if ("@" not in x and "#" not in x and "http" not in x and "RT" not in x)]
+                #instance = " ".join(words)
+                #instance = unicode(instance, errors='replace')
+
+                instance = clean_tweet(instance)
 
                 if instance not in instances:
                     instances.append(instance)
@@ -144,6 +171,13 @@ def preprocesar(labeled, unlabeled, dims, stop_words=None):
 
     y_cv = CountVectorizer()
     y_cv.fit(labels)
+
+    print "\nEtiquetas:"
+
+    for etiqueta, valor in y_cv.vocabulary_.items():
+        print "\tEtiqueta: %s - Valor: %d" % (etiqueta, valor)
+tiva
+    print ""
 
     for d_l in labeled:
         labeled[d_l]['X'] = x_cv.transform(labeled[d_l]['X'])

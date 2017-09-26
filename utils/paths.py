@@ -13,8 +13,8 @@ dataframe_columns = ['Adaptacion',
                      'Tarea',
                      'Fuente',
                      'Objetivo',
-                     'Baseline error', 
-                     'Transfer error', 
+                     'Baseline error',
+                     'Transfer error',
                      'Transfer loss']
 
 
@@ -23,11 +23,9 @@ dataframe_time_columns = ['Adaptacion', 'Tiempo']
 raw_folders = {
     'amazon': 'multi-domain/processed_acl',
     'twitter': 'twitter',
-    'newsgroups': 'newsgroups',
-    'twitter_3': 'twitter_3_etiquetas',
 }
 
 dimensions = {
  'amazon': 1000,
- 'twitter': 500,
+ 'twitter': 1000,
 }

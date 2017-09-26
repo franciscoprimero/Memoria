@@ -1,0 +1,13 @@
+,Adaptacion,Tarea,Fuente,Objetivo,Baseline error,Transfer error,Transfer loss
+1,mSDA,k->d,kitchen,dvd,26.25,34.2683567089,8.01835670892
+2,mSDA,k->e,kitchen,electronics,23.5,16.0829020726,-7.41709792745
+3,mSDA,k->b,kitchen,books,25.5,34.2633565839,8.76335658391
+4,mSDA,d->k,dvd,kitchen,20.75,19.7979949499,-0.952005050126
+5,mSDA,d->e,dvd,electronics,23.5,29.5807395185,6.08073951849
+6,mSDA,d->b,dvd,books,25.5,25.620640516,0.120640516013
+7,mSDA,e->k,electronics,kitchen,20.75,10.9627740694,-9.78722593065
+8,mSDA,e->d,electronics,dvd,26.25,29.7657441436,3.5157441436
+9,mSDA,e->b,electronics,books,25.5,30.7257681442,5.2257681442
+10,mSDA,b->k,books,kitchen,20.75,22.8580714518,2.10807145179
+11,mSDA,b->d,books,dvd,26.25,24.1706042651,-2.07939573489
+12,mSDA,b->e,books,electronics,23.5,26.1481537038,2.64815370384

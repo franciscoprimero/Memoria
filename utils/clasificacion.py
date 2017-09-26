@@ -12,15 +12,15 @@ def get_best_score(X_tr, y_tr, classifier='SVC', n_jobs=2):
             'kernel': ['linear'],
             'C': [1, 10, 100, 1000],
             'cache_size': [7000],
-            'max_iter': [20000],
+            'max_iter': [50000],
         }]
 
-        clf = GridSearchCV(SVC(C=1), parametros, cv=5, n_jobs = n_jobs)
+        clf = GridSearchCV(SVC(), parametros, cv=5, n_jobs = n_jobs, scoring='roc_auc')
         clf.fit(X_tr, y_tr)
 
     elif classifier is 'KNeighbors':
         parametros = [{'n_neighbors': [10, 50, 100]}]
-        
+
         clf = GridSearchCV(KNeighborsClassifier(), parametros, cv=5, n_jobs = n_jobs)
         clf.fit(X_tr, y_tr)
 

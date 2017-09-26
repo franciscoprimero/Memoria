@@ -1,0 +1,7 @@
+,Adaptacion,Tarea,Fuente,Objetivo,Baseline error,Transfer error,Transfer loss
+1,GFK,t->g,thevoice,general,46.5240641711,40.6921608049,-5.83190336618
+2,GFK,t->r,thevoice,rio2016,58.3333333333,29.7640653358,-28.5692679976
+3,GFK,g->t,general,thevoice,50.0,24.4318181818,-25.5681818182
+4,GFK,g->r,general,rio2016,58.3333333333,21.1433756806,-37.1899576528
+5,GFK,r->t,rio2016,thevoice,50.0,25.3787878788,-24.6212121212
+6,GFK,r->g,rio2016,general,46.5240641711,42.6788124157,-3.84525175547

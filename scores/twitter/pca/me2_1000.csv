@@ -1,0 +1,7 @@
+,Adaptacion,Tarea,Fuente,Objetivo,Baseline error,Transfer error,Transfer loss
+1,PCA,t->g,thevoice,general,46.5240641711,41.1801022703,-5.3439619008
+2,PCA,t->r,thevoice,rio2016,58.3333333333,13.4754990926,-44.8578342408
+3,PCA,g->t,general,thevoice,50.0,21.3541666667,-28.6458333333
+4,PCA,g->r,general,rio2016,58.3333333333,18.4664246824,-39.8669086509
+5,PCA,r->t,rio2016,thevoice,50.0,21.0227272727,-28.9772727273
+6,PCA,r->g,rio2016,general,46.5240641711,45.4233110248,-1.10075314631

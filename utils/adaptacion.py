@@ -2,7 +2,7 @@ import time
 import timeit
 import numpy as np
 import os
-from sklearn.neighbors import KNeighborsClassifier
+#from sklearn.neighbors import KNeighborsClassifier
 from utils.clasificacion import get_best_score
 
 from keras.layers import Input, Dense, Dropout
@@ -96,7 +96,7 @@ def gfk_train_all(X_src, X_tgt, parameters, folder_path, prefix=""):
 
             # se une la ruta de la carpeta de modelos, el prefijo y el nombre
             # para guardar el modelo
-            full_path = os.path.join(folder_path, "%s%d.pkl " % (prefix, i))
+            full_path = os.path.join(folder_path, "%s%d.pkl" % (prefix, i))
             print "\tGuardando modelo en %s" % full_path
             joblib.dump(gfk, full_path)
 
@@ -105,7 +105,7 @@ def gfk_train_all(X_src, X_tgt, parameters, folder_path, prefix=""):
 
     return paths_list
 
-def gfk_grid_search(parameters, X_src, y_src, X_tgt, n_jobs=2):
+def gfk_grid_search(X_src, y_src, X_tgt, parameters, n_jobs=2):
     """
     gfk_grid_search
 
@@ -113,7 +113,7 @@ def gfk_grid_search(parameters, X_src, y_src, X_tgt, n_jobs=2):
     obtiene el mejor modelo realizando CV con los datos del dominio fuente.
 
     parameters: {
-        dims: [int],
+        dims: [int],so
         n_subs: [int]
 
     }
@@ -127,7 +127,7 @@ def gfk_grid_search(parameters, X_src, y_src, X_tgt, n_jobs=2):
             gfk = adapt_gfk(X_src, X_tgt, n, dim)
             X_src2 = transform_gfk(X_src, gfk)
 
-            clf = get_best_score(X_src2, y_src, 'KNeighbors', n_jobs=n_jobs)
+            clf = get_best_score(X_src2, y_src, 'SVC', n_jobs=n_jobs)
 
             print clf.best_score_
 
@@ -177,7 +177,6 @@ def create_SDA(input_size, layers, noise):
 
     return autoencoder, encoder
 
-
 def sda_pseudo_grid_search(X_train, X_val, parameters, folder_path, prefix=""):
     i=0
     saved_paths = []
@@ -217,6 +216,61 @@ def sda_pseudo_grid_search(X_train, X_val, parameters, folder_path, prefix=""):
                 i = i+1
 
     return saved_paths
+
+def sda_grid_search(X_train, X_val, X_test, y_test, parameters, n_jobs=2):
+    """
+    sda_grid_search
+
+    Realiza Grid Search con los parametros dados y
+    obtiene el mejor modelo realizando CV con los datos del dominio fuente.
+
+    parameters: {
+        'noises': [float],
+        'layers': [int],
+        'epochs': [int],
+    }
+    """
+    best_ae = None
+    best_e = None
+    best_score = None
+
+    dims = X_train.shape[1]
+
+    for noise in parameters['noises']:
+        for layers in parameters['layers']:
+            for epoch in parameters['epochs']:
+                print "\tpr: %.3f - epochs: %d - layers: %s" % (noise, epoch, layers)
+
+                #se crea un sda
+                autoencoder, encoder = create_SDA(dims, layers, noise)
+
+                print "\tEntrenando autoencoder..."
+                autoencoder.fit(X_train, X_train,
+                    epochs=epoch,
+                    batch_size=256,
+                    shuffle=True,
+                    verbose=0,
+                    validation_data=(X_val, X_val))
+
+
+                # adaptar datos de prueba
+                X_test2 = encoder.predict(X_test)
+
+                # probar datos de prueba
+                clf = get_best_score(X_test2, y_test, 'SVC', n_jobs=n_jobs)
+
+                print "\t%.3f\n" % clf.best_score_
+
+                if best_score is None:
+                    best_score = clf.best_score_
+                    best_ae = autoencoder
+                    best_e = encoder
+                elif clf.best_score_ > best_score:
+                    best_score = clf.best_score_
+                    best_ae = autoencoder
+                    best_e = encoder
+
+    return best_ae, best_e, best_score
 
 ##########
 ## mSDA ##
@@ -269,7 +323,7 @@ def msda_theano_pseudo_grid_search(X, parameters, folder_path, prefix=""):
             }
 
             #guardar el modelo
-            full_path = os.path.join(folder_path, "%s%d.pkl " % (prefix, i))
+            full_path = os.path.join(folder_path, "%s%d.pkl" % (prefix, i))
 
             print "\tGuardando modelo en %s" % full_path
             joblib.dump(new_model, full_path)
@@ -277,6 +331,47 @@ def msda_theano_pseudo_grid_search(X, parameters, folder_path, prefix=""):
             i = i+1
 
     return paths_list
+
+
+def msda_theano_grid_search(X_train, X_test, y_test, parameters, n_jobs=2):
+    """
+    msda_theano_grid_search
+
+    Realiza Grid Search con los parametros dados y
+    obtiene el mejor modelo realizando CV con los datos del dominio fuente.
+
+    parameters: {
+        layers: [int],
+        noises: [double]
+
+    }
+    """
+    x = T.dmatrix('x')
+
+    best_msda = None
+    best_score = None
+
+    for noise in parameters['noises']:
+        for layer in parameters['layers']:
+            print "\tpr: %.3f - l: %d" % (noise, layer)
+            #entrenar el mSDA
+            new_msda = mSDATheano(x, layer, noise)
+            t_adaptar = new_msda.fit(X_train)
+
+            # adaptar datos del dominio fuente
+            X_test2 = new_msda.predict(X_test)
+            clf = get_best_score(X_test2, y_test, 'SVC', n_jobs=n_jobs)
+
+            print "\t%.3f\n" % clf.best_score_
+
+            if best_score is None:
+                best_score = clf.best_score_
+                best_msda = new_msda
+            elif clf.best_score_ > best_score:
+                best_score = clf.best_score_
+                best_msda = new_msda
+
+    return best_msda, best_score
 
 ##########
 ## PCA ###
@@ -304,3 +399,39 @@ def pca_pseudo_grid_search(X_train, parameters, folder_path, prefix=""):
         i =i+1
 
     return saved_paths
+
+def pca_grid_search(X_train, X_test, y_test, parameters, n_jobs=2):
+    """
+    pca_grid_search
+
+    Realiza Grid Search con los parametros dados y
+    obtiene el mejor modelo realizando CV con los datos del dominio fuente.
+
+    parameters: {
+        n_components: [int],
+    }
+    """
+    best_pca = None
+    best_score = None
+
+    for n_components in parameters['n_components']:
+        print "\tn_components: %d" % (n_components)
+
+        # entrenar PCA
+        new_model = PCA(n_components=n_components)
+        new_model.fit(X_train)
+
+        # adaptar datos del dominio fuente
+        X_test2 = new_model.transform(X_test)
+        clf = get_best_score(X_test2, y_test, 'SVC', n_jobs=n_jobs)
+
+        print "\t%.3f\n" % clf.best_score_
+
+        if best_score is None:
+            best_score = clf.best_score_
+            best_pca = new_model
+        elif clf.best_score_ > best_score:
+            best_score = clf.best_score_
+            best_pca = new_model
+
+    return best_pca, best_score
