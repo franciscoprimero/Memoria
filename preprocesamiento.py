@@ -176,7 +176,6 @@ def preprocesar(labeled, unlabeled, dims, stop_words=None):
 
     for etiqueta, valor in y_cv.vocabulary_.items():
         print "\tEtiqueta: %s - Valor: %d" % (etiqueta, valor)
-tiva
     print ""
 
     for d_l in labeled:

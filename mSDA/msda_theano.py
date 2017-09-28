@@ -84,7 +84,8 @@ class mSDATheano(object):
             W, Xh = mda.get_mapping(self.pr)
             train_mda = function(
                 [mda.input],
-                [W, Xh]
+                [W, Xh],
+                allow_input_downcast = True
             )
             
             fns.append(train_mda)
@@ -131,7 +132,8 @@ class mSDATheano(object):
             
             pred = function(
                 [x2, W2],
-                y
+                y,
+                allow_input_downcast = True
             )
             
             Xh = pred(Xhs[i], W)

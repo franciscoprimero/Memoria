@@ -1,0 +1,7 @@
+,Adaptacion,Tarea,Fuente,Objetivo,Baseline error,Transfer error,Transfer loss
+1,Baseline,r->t,rio2016,thevoice,7.36268939394,20.8451704545,13.4824810606
+2,Baseline,r->g,rio2016,general,26.9981271861,43.1164908609,16.1183636748
+3,Baseline,t->r,thevoice,rio2016,10.2087114338,13.7477313975,3.5390199637
+4,Baseline,t->g,thevoice,general,26.9981271861,39.8746408145,12.8765136284
+5,Baseline,g->r,general,rio2016,10.2087114338,24.1833030853,13.9745916515
+6,Baseline,g->t,general,thevoice,7.36268939394,23.2362689394,15.8735795455
