@@ -1,13 +1,13 @@
 ,Adaptacion,Tarea,Fuente,Objetivo,Baseline error,Transfer error,Transfer loss
-1,GFK,k->d,kitchen,dvd,26.25,34.75,8.5
-2,GFK,k->e,kitchen,electronics,23.5,21.75,-1.75
-3,GFK,k->b,kitchen,books,25.5,35.0,9.5
-4,GFK,d->k,dvd,kitchen,20.75,22.0,1.25
-5,GFK,d->e,dvd,electronics,23.5,27.0,3.5
-6,GFK,d->b,dvd,books,25.5,35.75,10.25
-7,GFK,e->k,electronics,kitchen,20.75,16.75,-4.0
-8,GFK,e->d,electronics,dvd,26.25,35.25,9.0
-9,GFK,e->b,electronics,books,25.5,35.25,9.75
-10,GFK,b->k,books,kitchen,20.75,23.75,3.0
-11,GFK,b->d,books,dvd,26.25,26.75,0.5
-12,GFK,b->e,books,electronics,23.5,31.25,7.75
+1,GFK,e->d,electronics,dvd,19.125478137,27.0581764544,7.93269831746
+2,GFK,e->k,electronics,kitchen,11.8102952574,11.0827770694,-0.727518187955
+3,GFK,e->b,electronics,books,20.4205105128,29.5707392685,9.15022875572
+4,GFK,d->e,dvd,electronics,15.7803945099,22.7530688267,6.97267431686
+5,GFK,d->k,dvd,kitchen,11.8102952574,16.2654066352,4.45511137778
+6,GFK,d->b,dvd,books,20.4205105128,24.5706142654,4.15010375259
+7,GFK,k->e,kitchen,electronics,15.7803945099,14.7453686342,-1.03502587565
+8,GFK,k->d,kitchen,dvd,19.125478137,27.4481862047,8.3227080677
+9,GFK,k->b,kitchen,books,20.4205105128,30.0532513313,9.63274081852
+10,GFK,b->e,books,electronics,15.7803945099,25.4281357034,9.64774119353
+11,GFK,b->d,books,dvd,19.125478137,20.2355058876,1.11002775069
+12,GFK,b->k,books,kitchen,11.8102952574,17.8754468862,6.06515162879
