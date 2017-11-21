@@ -1,0 +1,17 @@
+,Dominio 1,Dominio 2,PAD
+0,books,dvd,1.83041297327
+1,books,"('kitchen', 'dvd', 'electronics')",1.8421996333
+2,books,kitchen,1.9608131853
+3,books,electronics,1.96772388609
+4,dvd,"('kitchen', 'electronics', 'books')",1.74437823555
+5,dvd,books,1.83041297327
+6,dvd,electronics,1.85770238831
+7,dvd,kitchen,1.86390631289
+8,electronics,kitchen,1.49492986228
+9,electronics,"('kitchen', 'dvd', 'books')",1.71258897757
+10,electronics,dvd,1.85770238831
+11,electronics,books,1.96772388609
+12,kitchen,electronics,1.49492986228
+13,kitchen,"('dvd', 'electronics', 'books')",1.70060396894
+14,kitchen,dvd,1.86390631289
+15,kitchen,books,1.9608131853

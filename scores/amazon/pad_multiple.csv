@@ -1,0 +1,9 @@
+,Dominio 1,Dimensiones,Dominio 2,PAD
+0,books,1000,dvd,1.83041297327
+1,books,3000,"('kitchen', 'dvd', 'electronics')",1.93737866695
+2,dvd,1000,"('kitchen', 'electronics', 'books')",1.74437823555
+3,dvd,3000,"('kitchen', 'electronics', 'books')",1.92457128991
+4,electronics,1000,kitchen,1.49492986228
+5,electronics,3000,kitchen,1.71253840642
+6,kitchen,1000,electronics,1.49492986228
+7,kitchen,3000,electronics,1.71253840642
