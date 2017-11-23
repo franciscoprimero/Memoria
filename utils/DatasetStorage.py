@@ -63,33 +63,49 @@ class Dataset():
         self.splitted = True
         return
 
-    def get_all_domain_X(self, domain):
+    def get_all_domain_X(self, domain, test_data=False):
         """get_all_domain_X.
            
         """
         v_l = self.labeled[domain]
-        v_ul = self.unlabeled[domain]
-
+        
+        
         if self.splitted:
             X_l_tr = v_l['X_tr'].todense()
-            X_l_ts = v_l['X_ts'].todense()
-            X_l = np.concatenate((X_l_tr, X_l_ts))
+            
+            if test_data:
+                X_l_ts = v_l['X_ts'].todense()
+                X_l = np.concatenate((X_l_tr, X_l_ts))
+            else:
+                X_l = X_l_tr
+                
         else:
             X_l = v_l['X'].todense()
 
-        X_ul = v_ul['X'].todense()
+            
+        if self.unlabeled is not None:
+            v_ul = self.unlabeled[domain]
+            X_ul = v_ul['X'].todense()
 
-        return np.concatenate((X_l, X_ul))
-
-    def get_all_X(self):
+            return np.concatenate((X_l, X_ul))
+        else:
+            return X_l
+    
+    
+    def get_all_X(self, test_data=False):
         instances = None
 
         if self.unlabeled is None:
             for v_l in self.labeled.values():
                 if self.splitted:
                     X_l_tr = v_l['X_tr'].todense()
-                    X_l_ts = v_l['X_ts'].todense()
-                    X_l = np.concatenate((X_l_tr, X_l_ts))
+                    
+                    
+                    if test_data:
+                        X_l_ts = v_l['X_ts'].todense()
+                        X_l = np.concatenate((X_l_tr, X_l_ts))
+                    else:
+                        X_l = X_l_tr
                 else:
                     X_l = v_l['X'].todense()
 
@@ -102,8 +118,12 @@ class Dataset():
             for v_l, v_ul in zip(self.labeled.values(), self.unlabeled.values()):
                 if self.splitted:
                     X_l_tr = v_l['X_tr'].todense()
-                    X_l_ts = v_l['X_ts'].todense()
-                    X_l = np.concatenate((X_l_tr, X_l_ts))
+                    
+                    if test_data:
+                        X_l_ts = v_l['X_ts'].todense()
+                        X_l = np.concatenate((X_l_tr, X_l_ts))
+                    else:
+                        X_l = X_l_tr
                 else:
                     X_l = v_l['X'].todense()
 
