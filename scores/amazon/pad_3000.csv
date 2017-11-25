@@ -1,17 +1,17 @@
 ,Dominio 1,Dominio 2,PAD
-0,books,"('kitchen', 'dvd', 'electronics')",1.93737866695
+0,books,"('electronics', 'dvd', 'kitchen')",1.94727405091
 1,books,dvd,1.96627106831
 2,books,electronics,1.98397973908
 3,books,kitchen,1.99041925573
-4,dvd,"('kitchen', 'electronics', 'books')",1.92457128991
+4,dvd,"('electronics', 'kitchen', 'books')",1.93450711821
 5,dvd,books,1.96627106831
-6,dvd,electronics,1.96933376525
-7,dvd,kitchen,1.97722609968
-8,electronics,kitchen,1.71253840642
-9,electronics,"('kitchen', 'dvd', 'books')",1.81572206644
-10,electronics,dvd,1.96933376525
+6,dvd,kitchen,1.97243572754
+7,dvd,electronics,1.97322103445
+8,electronics,kitchen,1.64480568562
+9,electronics,"('dvd', 'kitchen', 'books')",1.81231125971
+10,electronics,dvd,1.97322103445
 11,electronics,books,1.98397973908
-12,kitchen,electronics,1.71253840642
-13,kitchen,"('dvd', 'electronics', 'books')",1.84288718723
-14,kitchen,dvd,1.97722609968
+12,kitchen,electronics,1.64480568562
+13,kitchen,"('electronics', 'dvd', 'books')",1.80810504745
+14,kitchen,dvd,1.97243572754
 15,kitchen,books,1.99041925573

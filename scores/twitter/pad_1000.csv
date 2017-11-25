@@ -1,10 +1,10 @@
 ,Dominio 1,Dominio 2,PAD
 0,general,thevoice,1.37758298169
-1,general,"('thevoice', 'rio2016')",1.60445705358
-2,general,rio2016,1.87866616142
-3,rio2016,thevoice,1.58857733557
-4,rio2016,"('thevoice', 'general')",1.74854087089
-5,rio2016,general,1.87866616142
+1,general,rio2016,1.56389497948
+2,general,"('rio2016', 'thevoice')",1.58536518509
+3,rio2016,general,1.56389497948
+4,rio2016,thevoice,1.67692497837
+5,rio2016,"('thevoice', 'general')",1.74854087089
 6,thevoice,general,1.37758298169
-7,thevoice,"('general', 'rio2016')",1.48508341974
-8,thevoice,rio2016,1.58857733557
+7,thevoice,"('rio2016', 'general')",1.46757470073
+8,thevoice,rio2016,1.67692497837
